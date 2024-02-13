@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package project;
+
+// Creates an item in the database
+service CRUD {
+    rpc CreateItem (Employee) returns (ID) {}
+    rpc ReadItem (ID) returns (Employee) {}
+    rpc UpdateItem (Employee) returns (ID) {}
+    rpc DeleteItem (ID) returns (ID) {}
+}
+
+message Employee {
+    string name = 1;
+    string id = 2;
+    int32 category = 3;
+    repeated string tags = 4;
+    map<string, string> metadata = 5;
+
+}
+
+message ID {
+    string id = 1;
+}
