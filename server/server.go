@@ -39,7 +39,7 @@ func main() {
 
 	// DB = &mong{mongo.DB("mydb").C("mycol")}
 
-	clientOptions := options.Client().ApplyURI("mongodb+srv://saanjeev:saanjeev@cluster0.iqret.mongodb.net/")
+	clientOptions := options.Client().ApplyURI("URI")
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
