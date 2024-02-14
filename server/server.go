@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 
@@ -39,11 +40,12 @@ func main() {
 
 	// DB = &mong{mongo.DB("mydb").C("mycol")}
 
-	clientOptions := options.Client().ApplyURI("URI")
+	clientOptions := options.Client().ApplyURI("mongodb+srv://saanjeev:saanjeev@cluster0.iqret.mongodb.net/")
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Connected to mongoDB")
 	DB = client.Database("cloudbee").Collection("items111")
 
 	// Host grpc service
@@ -67,11 +69,12 @@ func main() {
 // CreateItem creates a new item in the database
 // Returns the inserted ID and error (if any)
 func (s *server) CreateItem(ctx context.Context, em *pb.Employee) (*pb.ID, error) {
+	fmt.Println("Inside Create Item")
 	// If ID is null, return specific error
 	if em.Id == "" {
 		return nil, status.Error(codes.InvalidArgument, "ID is empty, please try again")
 	}
-
+	fmt.Println("Addig the value now")
 	// return &pb.ID{Id: em.Id}, DB.Operation.Insert(em)
 	DB.InsertOne(context.TODO(), em)
 	return &pb.ID{Id: em.Id}, nil
@@ -81,11 +84,13 @@ func (s *server) CreateItem(ctx context.Context, em *pb.Employee) (*pb.ID, error
 // Returns the employee name and ID and error (if any)
 func (s *server) ReadItem(ctx context.Context, em *pb.ID) (*pb.Employee, error) {
 	// If ID is null, return specific error
+	fmt.Println("Inside REad Item")
 	if em.Id == "" {
 		return nil, status.Error(codes.InvalidArgument, "ID is empty, please try again")
 	}
 
 	var result pb.Employee
+	fmt.Println("Finding the value now")
 	// err := DB.Operation.Find(bson.M{"id": em.Id}).One(&result)
 	err := DB.FindOne(context.TODO(), bson.M{"id": em.Id}).Decode(&result)
 	if err != nil {

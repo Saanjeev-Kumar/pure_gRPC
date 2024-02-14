@@ -1,0 +1,12 @@
+protoc --go_out=. proto/grpc.proto
+
+for the messages 
+
+protoc --go-grpc_out=require_unimplemented_servers=false:. proto/grpc.proto
+
+for the services
+
+combined
+
+
+protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. proto/grpc.proto
